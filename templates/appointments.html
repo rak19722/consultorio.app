@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultorio - Citas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Panel del Doctor</h1>
+        <nav>
+            <a href="{{ url_for('logout') }}"><button>Salir</button></a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Gestión de Pacientes</h2>
+
+        <div class="button-group">
+            <a href="{{ url_for('add_patient') }}">
+                <button class="doctor-btn">Agregar Paciente</button>
+            </a>
+            <a href="{{ url_for('search_patient') }}">
+                <button class="doctor-btn">Buscar Paciente</button>
+            </a>
+            <a href="{{ url_for('patients') }}">
+                <button class="doctor-btn">Mostrar Todos los Pacientes</button>
+            </a>
+            <a href="{{ url_for('delete_patient') }}">
+                <button class="doctor-btn">Eliminar Paciente</button>
+            </a>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pacientes Registrados</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.9em;
+      box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #1d7472;
+      color: white;
+      position: sticky;
+      top: 0;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #e6f7f7;
+    }
+    .actions form {
+      display: inline;
+    }
+    .delete-btn {
+      padding: 5px 10px;
+      background-color: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .delete-btn:hover {
+      background-color: #ff5252;
+    }
+    .no-patients {
+      text-align: center;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 500px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Healthicon.png" alt="Logo" width="40">
+    </div>
+    <nav>
+      <a href="{{ url_for('appointments') }}"><button>Inicio</button></a>
+      <a href="{{ url_for('add_patient') }}"><button>Agregar Paciente</button></a>
+      <a href="{{ url_for('search_patient') }}"><button>Buscar Paciente</button></a>
+      <a href="{{ url_for('deleted_patients') }}"><button>Ver Eliminados</button></a>
+      <a href="{{ url_for('logout') }}"><button class="register">Salir</button></a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Lista de Pacientes Activos</h1>
+
+    {% if patients %}
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Edad</th>
+          <th>Estatura (m)</th>
+          <th>Peso (kg)</th>
+          <th>Fecha Registro</th>
+          <th>Descripción</th>
+          <th>Médico</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for paciente in patients %}
+        <tr>
+          <td>{{ paciente[0] }}</td> <!-- ID -->
+          <td>{{ paciente[2] }}</td> <!-- nombres -->
+          <td>{{ paciente[1] }}</td> <!-- correo -->
+          <td>{{ paciente[3] }}</td> <!-- edad -->
+          <td>{{ "%.2f"|format(paciente[4]) if paciente[4] else 'N/A' }}</td> <!-- estatura -->
+          <td>{{ "%.1f"|format(paciente[5]) if paciente[5] else 'N/A' }}</td> <!-- peso -->
+          <td>{{ paciente[6] if paciente[6] else 'N/A' }}</td> <!-- fecha -->
+          <td>{{ paciente[7][:50] + '...' if paciente[7] and paciente[7]|length > 50 else paciente[7] if paciente[7] else 'N/A' }}</td> <!-- descripción -->
+          <td>{{ paciente[8] if paciente[8] else 'No asignado' }}</td> <!-- doctor -->
+          <td class="actions">
+            <form method="POST" action="{{ url_for('delete_patient') }}" onsubmit="return confirm('¿Eliminar paciente ID: {{ paciente[0] }} - {{ paciente[2] }}?');">
+              <input type="hidden" name="id" value="{{ paciente[0] }}">
+              <button type="submit" class="delete-btn">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="no-patients">
+      <p>No hay pacientes registrados actualmente.</p>
+      <a href="{{ url_for('add_patient') }}"><button style="background-color: #1d7472; color: white; margin-top: 10px;">Agregar Primer Paciente</button></a>
+    </div>
+    {% endif %}
+  </main>
+
+  <footer>
+    <p>© 2025 Centro de Salud. Todos los derechos reservados.</p>
+  </footer>
+</body>
+</html>

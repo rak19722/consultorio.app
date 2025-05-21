@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://cdn-icons-png.flaticon.com/512/2966/2966459.png" alt="Logo" width="40">
+    </div>
+    <nav>
+      <button>Community</button>
+      <button>Resources</button>
+      <button>Contact</button>
+      <a href="#"><button class="active">Sign In</button></a>
+      
+    </nav>
+  </header>
+
+  <main>
+    <h1>HealthCare</h1>
+    <h2>Your Best Option</h2>
+    <p class="by">by: CRRS</p>
+
+    <div class="form-box">
+      <form method="POST" action="{{ url_for('login') }}">
+        <label>Email</label><br>
+        <input type="text" name="email" placeholder="Enter your email"><br>
+        <label>Password</label><br>
+        <input type="password" name="password" placeholder="Enter your password"><br>
+        <div class="button-group">
+          <button type="submit" class="doctor-btn">Sign In</button>
+        </div>
+      </form>
+
+      <!-- Redirección directa a registro de paciente -->
+      <div class="button-group">
+       
+        <a href="{{ url_for('patient_search') }}"><button class="doctor-btn">I'm a Patient</button></a>
+        </a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

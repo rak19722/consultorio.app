@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Agregar Paciente</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Healthicon.png" alt="Logo" width="40">
+    </div>
+    <nav>
+      <a href="{{ url_for('appointments') }}"><button>Inicio</button></a>
+      <a href="{{ url_for('patients') }}"><button>Ver Pacientes</button></a>
+      <a href="{{ url_for('search_patient') }}"><button>Buscar Paciente</button></a>
+      <a href="{{ url_for('logout') }}"><button class="register">Cerrar sesión</button></a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Agregar Nuevo Paciente</h1>
+    <div class="form-box">
+      <form method="POST" action="{{ url_for('add_patient') }}">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+          <div>
+            <label for="correo">Correo electrónico:</label>
+            <input type="email" id="correo" name="correo" required style="width: 90%;">
+          </div>
+          <div>
+            <label for="nombres">Nombre completo:</label>
+            <input type="text" id="nombres" name="nombres" required style="width: 90%;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+          <div>
+            <label for="edad">Edad:</label>
+            <input type="number" id="edad" name="edad" min="0" max="120" required style="width: 90%;">
+          </div>
+          <div>
+            <label for="estatura">Estatura (m):</label>
+            <input type="number" id="estatura" name="estatura" step="0.01" min="0.5" max="2.5" required style="width: 90%;">
+          </div>
+          <div>
+            <label for="peso">Peso (kg):</label>
+            <input type="number" id="peso" name="peso" step="0.1" min="0" max="300" required style="width: 90%;">
+          </div>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label for="fecha">Fecha de registro:</label>
+          <input type="date" id="fecha" name="fecha" required style="width: 95%;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label for="doctor">Médico tratante:</label>
+          <input type="text" id="doctor" name="doctor" required style="width: 95%;" placeholder="Nombre del médico">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label for="descripcion">Descripción/Notas:</label>
+          <textarea id="descripcion" name="descripcion" required style="width: 95%; height: 100px;"></textarea>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="register">Guardar Paciente</button>
+          <a href="{{ url_for('patients') }}"><button type="button">Cancelar</button></a>
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

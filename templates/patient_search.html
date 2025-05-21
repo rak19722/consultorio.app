@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Información Médica</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Healthicon.png" alt="Logo" width="40">
+    </div>
+    <nav>
+      <a href="{{ url_for('appointments') }}"><button>Inicio</button></a>
+      <a href="{{ url_for('patient_login') }}" style="margin-left: auto;"><button class="register">Acceso Pacientes</button></a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="form-box" style="max-width: 800px;">
+      <h1>Consulta tu Información Médica</h1>
+      
+      <form method="POST" action="{{ url_for('patient_info') }}" style="margin-bottom: 30px;">
+        <h2 style="color: #016d72; text-align: center;">Verifica tu identidad</h2>
+        
+        <div style="margin-bottom: 15px;">
+          <label for="nombres">Nombre completo:</label>
+          <input type="text" id="nombres" name="nombres" required style="width: 100%;">
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+          <label for="correo">Correo electrónico registrado:</label>
+          <input type="email" id="correo" name="correo" required style="width: 100%;">
+        </div>
+        
+        <div style="text-align: center;">
+          <button type="submit" class="register">Buscar mi información</button>
+        </div>
+      </form>
+
+      {% if patient %}
+        <div style="background-color: #e8f5e9; padding: 20px; border-radius: 10px; margin-top: 30px;">
+          <h2 style="color: #016d72; border-bottom: 2px solid #81c784; padding-bottom: 10px;">Tu Información Médica</h2>
+          
+          <table style="width: 100%; margin: 20px 0; border-collapse: collapse;">
+            <thead style="background-color: #1d7472; color: white;">
+              <tr>
+                <th style="padding: 12px;">Nombre</th>
+                <th style="padding: 12px;">Edad</th>
+                <th style="padding: 12px;">Estatura</th>
+                <th style="padding: 12px;">Peso</th>
+                <th style="padding: 12px;">Descripción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 12px;">{{ patient[0] }}</td>
+                <td style="padding: 12px;">{{ patient[1] }}</td>
+                <td style="padding: 12px;">{{ "%.2f"|format(patient[2]) if patient[2] else 'N/A' }} m</td>
+                <td style="padding: 12px;">{{ "%.1f"|format(patient[3]) if patient[3] else 'N/A' }} kg</td>
+                <td style="padding: 12px;">{{ patient[4] or 'Sin descripción' }}</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <h3 style="color: #016d72; margin-top: 0;">Médico Tratante</h3>
+            <p style="font-size: 1.1em;"><strong>{{ patient[5] or 'No asignado' }}</strong></p>
+          </div>
+        </div>
+      
+      {% elif eliminado %}
+        <div style="background-color: #ffebee; padding: 20px; border-radius: 10px; border-left: 5px solid #f44336; margin-top: 30px;">
+          <h2 style="color: #c62828;">Registro Eliminado</h2>
+          <p>El paciente <strong>"{{ eliminado[0] }}"</strong> fue eliminado de nuestros registros.</p>
+          <p><strong>Fecha de eliminación:</strong> {{ eliminado[1] }}</p>
+          <p><strong>Médico asignado:</strong> {{ eliminado[2] }}</p>
+          <p style="margin-top: 15px; font-style: italic;">Para más información, por favor contacte al administrador del sistema.</p>
+        </div>
+      
+      {% elif request.method == 'POST' %}
+        <div style="text-align: center; padding: 20px; background-color: #fff3cd; border-radius: 10px; margin-top: 20px;">
+          <p style="color: #856404; font-size: 1.1em;">No se encontró información médica asociada a estos datos.</p>
+          <p>Por favor verifica que los datos ingresados sean correctos.</p>
+        </div>
+      {% endif %}
+
+      <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('index') }}"><button>Volver al inicio</button></a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

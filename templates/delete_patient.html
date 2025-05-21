@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Paciente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Healthicon.png" alt="Logo" width="40">
+    </div>
+    <nav>
+      <a href="{{ url_for('appointments') }}"><button>Inicio</button></a>
+      <a href="{{ url_for('patients') }}"><button>Ver Pacientes</button></a>
+      <a href="{{ url_for('add_patient') }}"><button>Agregar Paciente</button></a>
+      <a href="{{ url_for('logout') }}"><button class="register">Cerrar sesión</button></a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="form-box" style="max-width: 500px;">
+      <h1>Eliminar Paciente</h1>
+      <form method="POST" action="{{ url_for('delete_patient') }}" onsubmit="return confirm('¿Está seguro que desea eliminar este paciente? Esta acción registrará los datos en auditoría.');">
+        <div style="margin-bottom: 20px;">
+          <label for="id" style="display: block; margin-bottom: 8px; font-weight: bold;">ID del paciente a eliminar:</label>
+          <input type="number" id="id" name="id" required style="width: 100%; padding: 10px; border-radius: 20px; border: 1px solid #ccc;">
+        </div>
+        
+        <div class="button-group">
+          <button type="submit" class="register" style="background-color: #dc3545;">Confirmar Eliminación</button>
+          <a href="{{ url_for('patients') }}"><button type="button">Cancelar</button></a>
+        </div>
+      </form>
+      
+      <div style="margin-top: 20px; background-color: #fff3cd; padding: 15px; border-radius: 10px; border-left: 5px solid #ffc107;">
+        <h3 style="color: #856404; margin-top: 0;">Importante:</h3>
+        <p style="margin-bottom: 0;">Esta acción moverá el registro a la tabla de auditoría (pacientes_eliminados) donde se conservarán todos los datos del paciente, incluyendo el médico tratante.</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

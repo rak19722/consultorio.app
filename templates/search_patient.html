@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Paciente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Healthicon.png" alt="Logo" width="40">
+    </div>
+    <nav>
+      <a href="{{ url_for('appointments') }}"><button>Inicio</button></a>
+      <a href="{{ url_for('patients') }}"><button>Ver Pacientes</button></a>
+      <a href="{{ url_for('add_patient') }}"><button>Agregar Paciente</button></a>
+      <a href="{{ url_for('logout') }}"><button class="register">Cerrar sesión</button></a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Buscar Paciente</h1>
+    
+    <div class="form-box">
+      <form method="POST" style="text-align: center;">
+        <label for="nombres">Nombre del paciente:</label>
+        <input type="text" id="nombres" name="nombres" required style="width: 70%; margin: 10px 0;">
+        <div style="margin-top: 15px;">
+          <button type="submit" class="register">Buscar Paciente</button>
+        </div>
+      </form>
+    </div>
+
+    {% if nombre %}
+      <div style="background-color: white; border-radius: 20px; padding: 20px; margin: 20px auto; max-width: 1000px;">
+        <h2 style="color: #016d72;">Resultados para "{{ nombre }}"</h2>
+        
+        {% if patients %}
+          <h3>Pacientes Activos</h3>
+          <table style="width: 100%; margin: 15px 0; border-collapse: collapse;">
+            <thead style="background-color: #1d7472; color: white;">
+  <tr>
+    <th style="padding: 10px;">Nombre</th>
+    <th style="padding: 10px;">Correo</th>
+    <th style="padding: 10px;">Edad</th>
+    <th style="padding: 10px;">Estatura</th>
+    <th style="padding: 10px;">Peso</th>
+    <th style="padding: 10px;">Diagnóstico</th>  <!-- NUEVA COLUMNA -->
+    <th style="padding: 10px;">Médico</th>
+  </tr>
+</thead>
+<tbody>
+  {% for patient in patients %}
+  <tr style="border-bottom: 1px solid #ddd;">
+    <td style="padding: 10px;">{{ patient[2] }}</td>
+    <td style="padding: 10px;">{{ patient[1] }}</td>
+    <td style="padding: 10px;">{{ patient[3] }}</td>
+    <td style="padding: 10px;">{{ "%.2f"|format(patient[4]) if patient[4] else 'N/A' }} m</td>
+    <td style="padding: 10px;">{{ "%.1f"|format(patient[5]) if patient[5] else 'N/A' }} kg</td>
+    <td style="padding: 10px;">{{ patient[7] if patient[7] else 'Sin diagnóstico' }}</td>
+    <td style="padding: 10px;">{{ patient[8] if patient[8] else 'No asignado' }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+
+          </table>
+        {% else %}
+          <p style="color: #666; font-style: italic; text-align: center;">No se encontraron pacientes activos con ese nombre.</p>
+        {% endif %}
+
+        {% if eliminados %}
+          <div style="margin-top: 30px; padding: 15px; background-color: #fff8e1; border-left: 5px solid #ffa000; border-radius: 0 10px 10px 0;">
+            <h3 style="color: #016d72;">Registros Eliminados</h3>
+            <table style="width: 100%; background-color: #ffebee; border-collapse: collapse;">
+              <thead style="background-color: #ef9a9a;">
+                <tr>
+                  <th style="padding: 10px;">Nombre</th>
+                  <th style="padding: 10px;">Correo</th>
+                  <th style="padding: 10px;">Fecha Eliminación</th>
+                  <th style="padding: 10px;">Médico</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for eliminado in eliminados %}
+                <tr style="border-bottom: 1px solid #ffcdd2;">
+                  <td style="padding: 10px;">{{ eliminado[0] }}</td>
+                  <td style="padding: 10px;">{{ eliminado[1] }}</td>
+                  <td style="padding: 10px;">{{ eliminado[2] }}</td>
+                  <td style="padding: 10px;">{{ eliminado[3] }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p style="font-size: 0.9em; color: #666; text-align: center;">
+              <em>Estos registros han sido eliminados y son solo para fines de auditoría.</em>
+            </p>
+          </div>
+        {% endif %}
+
+        {% if not patients and not eliminados %}
+          <p style="color: #666; font-style: italic; text-align: center;">No se encontraron registros (activos o eliminados) con ese nombre.</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="{{ url_for('patients') }}"><button>Volver a Pacientes</button></a>
+    </div>
+  </main>
+</body>
+</html>

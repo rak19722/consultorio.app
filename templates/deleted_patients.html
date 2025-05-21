@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pacientes Eliminados</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #1d7472;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Healthicon.png" alt="Logo" width="40">
+    </div>
+    <nav>
+      <a href="{{ url_for('appointments') }}"><button>Inicio</button></a>
+      <a href="{{ url_for('patients') }}"><button>Pacientes Activos</button></a>
+      <a href="{{ url_for('logout') }}"><button class="register">Salir</button></a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Pacientes Eliminados</h1>
+    
+    {% if eliminados %}
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Fecha Eliminación</th>
+          <th>Médico</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for paciente in eliminados %}
+        <tr>
+          <td>{{ paciente[0] }}</td>
+          <td>{{ paciente[1] }}</td>
+          <td>{{ paciente[2] }}</td>
+          <td>{{ paciente[3] }}</td>
+          <td>{{ paciente[4] if paciente[4] else 'No asignado' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No hay registros de pacientes eliminados.</p>
+    {% endif %}
+  </main>
+</body>
+</html>
